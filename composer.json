@@ -1,7 +1,7 @@
 {
     "name": "vendi-advertising/vendi-template-router",
     "type": "library",
-    "version" : "3.1.1",
+    "version" : "1.1.0",
     "description": "WordPress template router",
     "keywords": ["vendi","vendi-advertising"],
     "homepage": "https://github.com/vendi-advertising/vendi-template-router",
