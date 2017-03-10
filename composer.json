@@ -1,0 +1,27 @@
+{
+    "name": "vendi-advertising/vendi-template-router",
+    "type": "library",
+    "version" : "3.1.1",
+    "description": "WordPress template router",
+    "keywords": ["vendi","vendi-advertising"],
+    "homepage": "https://github.com/vendi-advertising/vendi-template-router",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Chris Haas",
+            "email": "chris@vendiadvertising.com",
+            "homepage": "https://www.vendiadvertising.com/",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0"
+    },
+    "require-dev" : {
+        "phpunit/phpunit": "*",
+        "scrutinizer/ocular": "*"
+    },
+    "autoload": {
+        "psr-4": {"Vendi\\Shared\\": "src/"}
+    }
+}
