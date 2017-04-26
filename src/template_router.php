@@ -122,7 +122,7 @@ class template_router
     {
         add_rewrite_rule(
                             //Look for our magic page
-                            '^' . $this->magic_folder . '/([a-zA-Z\-0-9]+)' . '$',
+                            '^' . $this->magic_folder . '/([a-zA-Z\-0-9_]+)' . '$',
 
                             //Redirect to index passing the magic page as a query string
                             'index.php?' . $this->magic_folder . '=1&' . $this->magic_page . '=$matches[1]', 'top'
