@@ -2,7 +2,7 @@
 /*
 Plugin Name: Vendi - Template Router
 Description: Vendi's common template routing code.
-Version: 1.3.2
+Version: 1.3.3
 Author: Vendi Advertising (Chris Haas)
 License: GPL2
 */
@@ -20,6 +20,8 @@ class template_router
     public $template_path;
 
     public $context;
+
+    public $default_template_name;
 
     private static $default_instance_name;
 
@@ -56,9 +58,32 @@ class template_router
         return self::$_instances;
     }
 
+    /**
+     * Register the default route and template name
+     *
+     * @since  1.3.3
+     *
+     * @param  string $context            The name of this route
+     * @param  string $magic_folder       The "folder" that "holds" this route
+     * @param  string $template_path      The absolute path to the template folder
+     * @param  string $template_name      The template name for default requests
+     * @param  string $magic_page         The querystring variable to use for routing
+     * @param  string $template_subfolder The folder to append to $template_path for this specific route
+     */
+    public static function register_default_context( $context, $magic_folder, $template_path, $template_name, $magic_page = 'page', $template_subfolder = 'templates' )
+    {
+        $obj = new self( $context, $magic_folder, $template_path, $magic_page, $template_subfolder );
+        if( $template_name )
+        {
+            $obj->default_template_name = $template_name;
+            self::set_default_instance_name( $context );
+        }
+        self::$_instances[ $context ] = $obj;
+    }
+
     public static function register_context( $context, $magic_folder, $template_path, $magic_page = 'page', $template_subfolder = 'templates' )
     {
-        self::$_instances[ $context ] = new self( $context, $magic_folder, $template_path, $magic_page, $template_subfolder );
+        self::register_context_with_default_template( $context, $magic_folder, $template_path, null, $magic_page, $template_subfolder );
     }
 
     /**
@@ -120,8 +145,23 @@ class template_router
         add_action( 'init',             array( $this, '_do_wire_rewrite_rules' ) );
     }
 
-    public function create_url( $page, array $args = array(), $fully_qualified = false )
+    public function get_default_url()
     {
+        return $this->default_route;
+    }
+
+    public function create_url( $page = null, array $args = array(), $fully_qualified = false )
+    {
+        if( $page )
+        {
+            if( ! $this->default_template_name )
+            {
+                throw new \Exception( 'No page provided and no default template previously set.' );
+            }
+
+            $page = $this->default_template_name;
+        }
+
         $prefix = '';
 
         if( $fully_qualified )
