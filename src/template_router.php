@@ -2,7 +2,7 @@
 /*
 Plugin Name: Vendi - Template Router
 Description: Vendi's common template routing code.
-Version: 1.3.3
+Version: 1.3.4
 Author: Vendi Advertising (Chris Haas)
 License: GPL2
 */
@@ -152,7 +152,7 @@ class template_router
 
     public function create_url( $page = null, array $args = array(), $fully_qualified = false )
     {
-        if( $page )
+        if( ! $page )
         {
             if( ! $this->default_template_name )
             {
