@@ -2,7 +2,7 @@
 /*
 Plugin Name: Vendi - Template Router
 Description: Vendi's common template routing code.
-Version: 1.2.0
+Version: 1.3.2
 Author: Vendi Advertising (Chris Haas)
 License: GPL2
 */
@@ -21,13 +21,15 @@ class template_router
 
     public $context;
 
+    private static $default_instance_name;
+
     private static $current_items = [];
 
     /**
      * The folder relative to $template_path that holds the templates.
      *
      * @since 1.3.0
-     * 
+     *
      * @var string
      */
     public $template_subfolder;
@@ -41,7 +43,7 @@ class template_router
      * this so make sure of your dependency order.
      *
      * @since 1.3.1
-     * 
+     *
      * @return array An array of arrays with keys context, subfolder and page.
      */
     public static function get_current_items()
@@ -59,14 +61,46 @@ class template_router
         self::$_instances[ $context ] = new self( $context, $magic_folder, $template_path, $magic_page, $template_subfolder );
     }
 
-    public static function get_instance( $context )
+    /**
+     * Get a router by instance name.
+     *
+     * @version 1.3.2          Context is now optional if set_default_instance_name() was previously called.
+     *
+     * @throws \Exception      If no context is provided and a default was not previously set.
+     *
+     * @param  string $context The name of the instance to get or null for the previously set default.
+     * @return self|null       The named instance of null if it cannot be found.
+     */
+    public static function get_instance( $context = null )
     {
+        if( ! $context )
+        {
+            if( ! self::$default_instance_name )
+            {
+                throw new \Exception( 'No context provided and no default instance previously set.' );
+            }
+
+            $context = self::$default_instance_name;
+        }
+
         if( array_key_exists( $context, self::$_instances ) )
         {
             return self::$_instances[ $context ];
         }
 
         return null;
+    }
+
+    /**
+     * Set the default instance name.
+     *
+     * @since  1.3.2
+     *
+     * @param string $name The default instance name
+     */
+    public static function set_default_instance_name( $name )
+    {
+        self::$default_instance_name = $name;
     }
 
     private function __construct( $context, $magic_folder, $template_path, $magic_page, $template_subfolder )
