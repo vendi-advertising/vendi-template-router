@@ -14,7 +14,8 @@
         }
     ],
     "require": {
-        "php": ">=5.3.0"
+        "php": ">=5.3.0",
+        "vendi-advertising/vendi-shared-utils": "^4"
     },
     "require-dev" : {
         "phpunit/phpunit": "*",
