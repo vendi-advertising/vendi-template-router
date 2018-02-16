@@ -80,6 +80,14 @@ class template_router
         }
         self::$_instances[ $context ] = $obj;
     }
+    
+    /**
+    * Deprecated. This is a pass-through to register_default_context()
+    */
+    public static function register_context_with_default_template( $context, $magic_folder, $template_path, $template_name, $magic_page, $template_subfolder )
+    {
+        self::register_default_context($context, $magic_folder, $template_path, $template_name, $magic_page, $template_subfolder);
+    }
 
     public static function register_context( $context, $magic_folder, $template_path, $magic_page = 'page', $template_subfolder = 'templates' )
     {
